@@ -27,6 +27,10 @@
 // }
 // animate();
 
+
+/**
+ * вращение модели
+ */
 let imgsLen = 19,
     imgsPath = 'img/',
     el = document.querySelector('#rotate-model'),
@@ -53,3 +57,32 @@ function RotateScroll() {
     }
   });
 }
+/**----------------------------------------------------------------------------- */
+
+/**
+ * play и stop видео при скролле
+ */
+
+document.addEventListener("DOMContentLoaded", function() {
+    const videos = document.querySelectorAll('.video');
+    console.log(videos);
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            const video = entry.target;
+            console.log(video);
+            if (entry.isIntersecting) {
+                video.play();
+            } else {
+                video.pause();
+                video.currentTime = 0;
+            }
+        });
+    }, {
+        threshold: 0.3 // Trigger when 50% of the video is visible
+    });
+
+    videos.forEach(video => {
+        observer.observe(video);
+    });
+});
