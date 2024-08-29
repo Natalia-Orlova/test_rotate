@@ -112,15 +112,30 @@ function setupVideoProgressCircle(video) {
   const circle = video.nextElementSibling.querySelector(".progress-circle");
   const circumference = 2 * Math.PI * 45; // Радиус круга 45
 
+  // video.addEventListener("timeupdate", function () {
+  //   const percent = video.currentTime / video.duration;
+  //   const offset = circumference - percent * circumference;
+  //   circle.style.strokeDashoffset = offset;
+  // });
+
+  let lastPercent = 0;
+  let isInitialLoad = true;
+
   video.addEventListener("timeupdate", function () {
     const percent = video.currentTime / video.duration;
-    const offset = circumference - percent * circumference;
+
+    if (isInitialLoad) {
+      isInitialLoad = false;
+      circle.style.transition = "none";
+    } else if (percent >= lastPercent) {
+      circle.style.transition = "stroke-dashoffset 1s ease";
+    } else {
+      circle.style.transition = "none";
+    }
+
+    const offset = (1 - percent) * circumference;
     circle.style.strokeDashoffset = offset;
-    // if (video.currentTime < 0.1) {
-    //   circle.style.transition = "none";
-    //   circle.style.strokeDashoffset = circumference;
-    // } else {
-    //   circle.style.transition = "stroke-dashoffset 1s ease";
-    // }
+
+    lastPercent = percent;
   });
 }

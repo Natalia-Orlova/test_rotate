@@ -116,7 +116,7 @@ body {
 .progress-circle {
   fill: transparent;
   stroke: #fff;
-  /* transition: stroke-dashoffset 0.3s ease; */
+  transition: stroke-dashoffset 1s ease;
 }
 
 @media screen and (min-width: 320px) and (max-width: 767px) {
