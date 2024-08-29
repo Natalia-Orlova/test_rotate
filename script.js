@@ -128,7 +128,7 @@ function setupVideoProgressCircle(video) {
       isInitialLoad = false;
       circle.style.transition = "none";
     } else if (percent >= lastPercent) {
-      circle.style.transition = "stroke-dashoffset 1s ease";
+      circle.style.transition = "stroke-dashoffset 0.3s ease";
     } else {
       circle.style.transition = "none";
     }
