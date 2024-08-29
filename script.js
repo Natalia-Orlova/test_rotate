@@ -27,32 +27,33 @@
 // }
 // animate();
 
-
 /**
  * вращение модели
  */
 let imgsLen = 19,
-    imgsPath = 'img/',
-    el = document.querySelector('#rotate-model'),
-    imgs = false, imgsCur = 0, step =0.3;
+  imgsPath = "img/",
+  el = document.querySelector("#rotate-model"),
+  imgs = false,
+  imgsCur = 0,
+  step = 0.3;
 
 function CreatImages() {
-  for(let i = 0; i < imgsLen; i++) {
-    el.insertAdjacentHTML('beforeend', `<img src="${imgsPath}${i+1}.png"/>`);
+  for (let i = 0; i < imgsLen; i++) {
+    el.insertAdjacentHTML("beforeend", `<img src="${imgsPath}${i + 1}.png"/>`);
   }
-  imgs = el.querySelectorAll('img');
+  imgs = el.querySelectorAll("img");
   RotateScroll();
-};
-CreatImages();
+}
+// CreatImages();
 
 function RotateScroll() {
-  imgs[imgsCur].style.display = 'block';
-  window.addEventListener('scroll', function(e) {
+  imgs[imgsCur].style.display = "block";
+  window.addEventListener("scroll", function (e) {
     let a = Math.floor((window.scrollY / imgsLen) * step),
-        i = a >= imgsLen ? a - (imgsLen * Math.floor(a / imgsLen)) : a;
-    if(imgsCur !== i) {
-      imgs[imgsCur].style.display = '';
-      imgs[i].style.display = 'block';
+      i = a >= imgsLen ? a - imgsLen * Math.floor(a / imgsLen) : a;
+    if (imgsCur !== i) {
+      imgs[imgsCur].style.display = "";
+      imgs[i].style.display = "block";
       imgsCur = i;
     }
   });
@@ -63,26 +64,63 @@ function RotateScroll() {
  * play и stop видео при скролле
  */
 
-document.addEventListener("DOMContentLoaded", function() {
-    const videos = document.querySelectorAll('.video');
-    console.log(videos);
+document.addEventListener("DOMContentLoaded", function () {
+  const videos = document.querySelectorAll(".video");
+  const observer = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        const video = entry.target;
+        let videoStatus = "paused";
+        const playPauseControl = video.nextElementSibling;
+        const playPauseImg = playPauseControl.querySelector("img");
 
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            const video = entry.target;
-            console.log(video);
-            if (entry.isIntersecting) {
-                video.play();
-            } else {
-                video.pause();
-                video.currentTime = 0;
-            }
+        if (entry.isIntersecting) {
+          video.play();
+          playPauseImg.src = "img/pause.svg";
+          videoStatus = "playing";
+        } else {
+          video.pause();
+          // video.currentTime = 0;
+          playPauseImg.src = "img/play.svg";
+          videoStatus = "paused";
+        }
+        playPauseControl.addEventListener("click", () => {
+          if (videoStatus === "playing") {
+            video.pause();
+            playPauseImg.src = "img/play.svg";
+            videoStatus = "paused";
+          } else {
+            video.play();
+            playPauseImg.src = "img/pause.svg";
+            videoStatus = "playing";
+          }
         });
-    }, {
-        threshold: 0.3 // Trigger when 50% of the video is visible
-    });
+        setupVideoProgressCircle(video);
+      });
+    },
+    {
+      threshold: 0.3, // Trigger when 50% of the video is visible
+    }
+  );
 
-    videos.forEach(video => {
-        observer.observe(video);
-    });
+  videos.forEach((video) => {
+    observer.observe(video);
+  });
 });
+
+function setupVideoProgressCircle(video) {
+  const circle = video.nextElementSibling.querySelector(".progress-circle");
+  const circumference = 2 * Math.PI * 45; // Радиус круга 45
+
+  video.addEventListener("timeupdate", function () {
+    const percent = video.currentTime / video.duration;
+    const offset = circumference - percent * circumference;
+    circle.style.strokeDashoffset = offset;
+    // if (video.currentTime < 0.1) {
+    //   circle.style.transition = "none";
+    //   circle.style.strokeDashoffset = circumference;
+    // } else {
+    //   circle.style.transition = "stroke-dashoffset 1s ease";
+    // }
+  });
+}
