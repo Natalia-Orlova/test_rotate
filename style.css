@@ -126,6 +126,9 @@ body {
   overflow-x: scroll;
   scrollbar-width: none;
 }
+.scroll-right img {
+  width: 180px;
+}
 
 @media screen and (min-width: 320px) and (max-width: 767px) {
   .text-content {
