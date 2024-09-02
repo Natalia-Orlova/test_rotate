@@ -126,6 +126,9 @@ body {
   overflow-x: scroll;
   scrollbar-width: none;
 }
+.scroll-right::-webkit-scrollbar {
+  display: none;
+}
 .scroll-right img {
   width: 180px;
 }
