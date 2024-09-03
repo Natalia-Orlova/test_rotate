@@ -139,3 +139,82 @@ function setupVideoProgressCircle(video) {
     lastPercent = percent;
   });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  const video = document.getElementById('myVideo');
+  const scrollStep = 0.4; 
+
+  window.addEventListener('wheel', function(event) {
+      if (event.deltaY > 0) {
+          // Скролл вниз - перемотка вперед
+          video.currentTime += scrollStep;
+      } else {
+          // Скролл вверх - перемотка назад
+          video.currentTime -= scrollStep;
+      }
+  }, { passive: false });
+});
+
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   const video = document.getElementById('myVideo');
+//   const scrollStep = 0.4; 
+//   let isDragging = false;
+
+//   // Обработчик для колесика мыши
+//   window.addEventListener('wheel', function(event) {
+//     if (event.deltaY > 0) {
+//       // Скролл вниз - перемотка вперед
+//       video.currentTime += scrollStep;
+//     } else {
+//       // Скролл вверх - перемотка назад
+//       video.currentTime -= scrollStep;
+//     }
+//   }, { passive: false });
+
+//   // Обработчики для перетаскивания бегунка
+//   window.addEventListener('mousedown', function() {
+//     isDragging = true;
+//   });
+
+//   window.addEventListener('mousemove', function() {
+//     if (isDragging) {
+//       console.log(111);
+//       const scrollTop = window.scrollY || document.documentElement.scrollTop;
+//       const maxScrollTop = document.documentElement.scrollHeight - window.innerHeight;
+//       const scrollFraction = scrollTop / maxScrollTop;
+//       const videoDuration = video.duration;
+
+//       video.currentTime = videoDuration * scrollFraction;
+//     }
+//   });
+
+//   window.addEventListener('mouseup', function() {
+//     isDragging = false;
+//   });
+// });
+
+
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   const video = document.getElementById('myVideo');
+//   const scrollStep = 0.5; // Шаг перемотки
+
+//   window.addEventListener('wheel', function(event) {
+//     // event.preventDefault();
+//     if (event.deltaY > 0) {
+//       // Скролл вниз - перемотка вперед
+//       video.currentTime = Math.min(video.currentTime + scrollStep, video.duration);
+//     } else {
+//       // Скролл вверх - перемотка назад
+//       video.currentTime = Math.max(video.currentTime - scrollStep, 0);
+//     }
+//   }, { passive: false });
+
+//   // window.addEventListener('scroll', function() {
+//   //   const scrollPosition = window.scrollY;
+//   //   const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+//   //   const videoPosition = (scrollPosition / maxScroll) * video.duration;
+//   //   video.currentTime = videoPosition;
+//   // });
+// });
